@@ -33,7 +33,7 @@ for i in range(num_queries):
 We will be computing Mo's Algorithm where our queries will be the sum of elements in the array
 from left to right (inclusive)
 """
-def mos_algorithm(array: list[int], queries) -> int:
+def mos_algorithm(array: list[int], queries):
     answers = [0 for _ in len(queries)]
     sorted_queries = sorted(queries, key=lambda x: (x.left,x.right))
 
