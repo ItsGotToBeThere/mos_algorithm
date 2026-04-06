@@ -1,4 +1,4 @@
-import math
+import math, sys
 
 class Query:
     left: int
@@ -69,7 +69,7 @@ if __name__ == "__main__":
     Here we create an array of queries grouped based off of which block of sqrt{n} length 
     the left index of the query falls into.
     """
-    sqrt_n = int(math.sqrt(len(array)))
+    sqrt_n = int(math.ceil(math.sqrt(len(array))))
     query_blocks = [[] for _ in range(sqrt_n)]
     for i in range(num_queries):
         left, right = [int(x) for x in input().split(" ")]
