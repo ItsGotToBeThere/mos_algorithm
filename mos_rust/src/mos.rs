@@ -41,23 +41,19 @@ pub struct MosAlg {
 
 // Here are our function implementations!
 impl MosAlg {
-    /// I know yall are not super familiar with rust, so
-    /// here's a quick crash course:
+    /// I know yall are likelt not super familiar with
+    /// rust, so here's a quick crash course:
     /// The data lives in the structs. The implementations
     /// are applications of functions that act upon
     /// structs. Kinda like methods in java.
     /// If it has pub before it it is allowed to be used
     /// outside of the other implementations for the
-    /// struct, kinda like private in java.
+    /// struct, kinda like public in java.
     /// The function signatures of the implementations can
     /// take in a `self`, kinda like python. However,
     /// unless it is a reference (`&self`), the `self` is
-    /// consumed. So often when applying actions to
-    /// structs we use a reference. When we want the
-    /// implementation to modify the struct, we need to
-    /// pass in a mutable reference, like `&mut self`.
-    /// This implementation is like a constructor,
-    /// returning an instance of Self.
+    /// consumed. This is an example of a function that
+    /// does not use self.
     pub fn new(data: Vec<usize>) -> Self {
         let size = data.len();
         let block_size = (size as f32).sqrt().ceil() as usize;
@@ -69,6 +65,9 @@ impl MosAlg {
         }
     }
 
+    /// When we want the implementation to modify the
+    /// struct, we need to pass in a mutable reference,
+    /// like `&mut self`.
     pub fn add_query(&mut self, left: usize, right: usize) {
         self.queries.push(Reverse(Query {
             index: self.queries.len(),
@@ -78,6 +77,10 @@ impl MosAlg {
         }));
     }
 
+    /// So often when applying actions to structs we use a
+    /// reference.
+    /// The arrow syntax is also used to indicate the
+    /// return type.
     pub fn execute(&self) -> Vec<usize> {
         let mut output = vec![0; self.queries.len()];
         let mut tmp = self.queries.clone();
@@ -91,24 +94,25 @@ impl MosAlg {
                 start = q.left;
                 end = q.left;
                 sum = self.data[q.left];
-                while start > q.left {
-                    start -= 1;
-                    sum += self.data[start];
-                }
-                while start < q.left {
-                    sum += 1;
-                    sum -= self.data[start];
-                }
-                while end < q.right {
-                    end += 1;
-                    sum += self.data[end];
-                }
-                while end > q.right {
-                    end -= 1;
-                    sum -= self.data[end];
-                }
-                output[q.index] = sum;
+                lastblock = q.left_index_block;
             }
+            while start > q.left {
+                start -= 1;
+                sum += self.data[start];
+            }
+            while start < q.left {
+                sum += 1;
+                sum -= self.data[start];
+            }
+            while end < q.right {
+                end += 1;
+                sum += self.data[end];
+            }
+            while end > q.right {
+                end -= 1;
+                sum -= self.data[end];
+            }
+            output[q.index] = sum;
         }
         output
     }
