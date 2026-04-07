@@ -1,6 +1,6 @@
 use std::{cmp::Reverse, collections::BinaryHeap};
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, Eq)]
 pub struct Query {
     index: usize,
     left_index_block: usize,
@@ -27,13 +27,17 @@ impl Ord for Query {
         }
     }
 }
+impl PartialEq for Query {
+    fn eq(&self, other: &Self) -> bool {
+        self.left_index_block == other.left_index_block && self.right == other.right
+    }
+}
 
 /// A struct containing the data used by out implementation
 /// of Mo's Algorithm. Contains the data, and a max heap of
 /// all the queries.
 pub struct MosAlg {
     data: Vec<usize>,
-    size: usize,
     block_size: usize,
     /// The binary heap is the max heap struct in rust.
     queries: BinaryHeap<Reverse<Query>>,
@@ -59,7 +63,6 @@ impl MosAlg {
         let block_size = (size as f32).sqrt().ceil() as usize;
         Self {
             data,
-            size,
             block_size,
             queries: BinaryHeap::new(),
         }
@@ -93,26 +96,26 @@ impl MosAlg {
             if q.left_index_block != lastblock {
                 start = q.left;
                 end = q.left;
-                sum = self.data[q.left];
+                sum = self.data[start] as isize;
                 lastblock = q.left_index_block;
             }
             while start > q.left {
                 start -= 1;
-                sum += self.data[start];
+                sum += self.data[start] as isize;
             }
             while start < q.left {
-                sum += 1;
-                sum -= self.data[start];
+                sum -= self.data[start] as isize;
+                start += 1;
             }
             while end < q.right {
                 end += 1;
-                sum += self.data[end];
+                sum += self.data[end] as isize;
             }
             while end > q.right {
+                sum -= self.data[end] as isize;
                 end -= 1;
-                sum -= self.data[end];
             }
-            output[q.index] = sum;
+            output[q.index] = sum as usize;
         }
         output
     }

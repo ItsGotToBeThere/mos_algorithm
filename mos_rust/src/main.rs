@@ -12,8 +12,6 @@ fn main() {
         .split_whitespace()
         .filter_map(|x| x.parse().ok())
         .collect();
-    let n = array.len();
-    let block_size = (n as f32).sqrt().ceil() as usize;
 
     let num_queries = lines
         .next()
