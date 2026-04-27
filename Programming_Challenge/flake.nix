@@ -65,6 +65,7 @@
             rust-analyzer
             rustfmt
             pkg-config
+            python313
           ];
 
           # Specify the rust-src path (many editors rely on this)
