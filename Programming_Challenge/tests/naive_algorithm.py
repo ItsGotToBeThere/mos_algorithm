@@ -14,8 +14,6 @@ def main():
     out = []
 
     for _ in range(Q):
-        if _ % 1000 == 0:
-            print(_)
         query_type = input_data[idx]; idx += 1
 
         if query_type == 'F':
