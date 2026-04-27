@@ -1,6 +1,6 @@
 #[derive(PartialEq, Eq, Debug)]
 pub enum QueryType {
-    Frequency(usize),
+    Frequency(u32),
     Unique,
 }
 

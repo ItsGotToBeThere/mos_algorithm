@@ -63,9 +63,22 @@ fn main() {
             .map(|s| s.to_owned())
             .collect();
         match parts[0].as_str() {
-            "F" => (),
-            "U" => (),
+            "F" => solver.insert_query(
+                mos::QueryType::Frequency(parts[1].parse().expect("frequency is u32")),
+                parts[2].parse().expect(""),
+                parts[3].parse().expect(""),
+            ),
+            "U" => solver.insert_query(
+                mos::QueryType::Unique,
+                parts[1].parse().expect(""),
+                parts[2].parse().expect(""),
+            ),
             _ => unreachable!("You should not be here... how did you get here?!"),
         }
     }
+
+    solver
+        .execute_queries()
+        .iter()
+        .for_each(|x| println!("{x}"));
 }
