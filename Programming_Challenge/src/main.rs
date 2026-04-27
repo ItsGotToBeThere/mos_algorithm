@@ -5,10 +5,6 @@ use crate::mos::MosSolver;
 pub mod mos;
 
 fn main() {
-    println!(
-        "Initiating solution for the `Aiding the Surveillance State` programming challenge..."
-    );
-
     let mut lines = BufReader::new(stdin()).lines().filter_map(|x| x.ok());
 
     let _n = lines
@@ -18,9 +14,6 @@ fn main() {
         .parse::<usize>()
         .expect("data length is a unsigned integer");
 
-    println!("There are {_n} IDs");
-
-    println!("Parsing data...");
     let data: Vec<u32> = lines
         .next()
         .expect("Line for the data")
@@ -30,9 +23,6 @@ fn main() {
                 .expect("ids should be 32-bit unsigned integers")
         })
         .collect();
-    println!("I found {} IDs", data.len());
-
-    println!("Parsing query info line...");
     let (q, k) = if let [q, k] = lines
         .next()
         .expect("query info line")
@@ -47,15 +37,10 @@ fn main() {
     } else {
         panic!("failed to parse query info line")
     };
-    println!("Expecting {q} queries; Uniqueness queries will return count over {k}");
 
-    println!("Instantiating solver struct...");
     let mut solver = MosSolver::init(&data, k);
-    println!("Struct has been created.");
 
-    println!("Parsing queries...");
-    for query_n in 0..q {
-        println!("Parsing query: {query_n}");
+    for _query_n in 0..q {
         let parts: Vec<String> = lines
             .next()
             .expect("There should be another query!")
@@ -80,5 +65,5 @@ fn main() {
     solver
         .execute_queries()
         .iter()
-        .for_each(|x| println!("{x}"));
+        .for_each(|result| println!("{result}"));
 }
